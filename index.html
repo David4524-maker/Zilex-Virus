@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zilex Virus Simulator</title>
+<style>
+  :root{
+    --bg:#060a08; --panel:#0b120e; --line:#1c2b22;
+    --text:#c9f5d4; --dim:#5f8a70; --accent:#39ff8f; --warn:#ffb347;
+    color-scheme: dark;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{
+    margin:0; min-height:100%; background:var(--bg); color:var(--text);
+    font-family:'Courier New', ui-monospace, monospace;
+    display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  .crt{
+    width:100%; max-width:640px; background:var(--panel);
+    border:1px solid var(--line); border-radius:10px;
+    box-shadow:0 0 0 1px rgba(57,255,143,.05), 0 20px 60px rgba(0,0,0,.5);
+    overflow:hidden;
+  }
+  .bar{
+    display:flex; align-items:center; gap:8px; padding:10px 14px;
+    border-bottom:1px solid var(--line); background:#0a0f0c;
+  }
+  .dot{width:10px;height:10px;border-radius:50%;background:#27392f;}
+  .bar span.title{margin-left:8px; color:var(--dim); font-size:12px; letter-spacing:.03em;}
+  .screen{padding:20px; min-height:360px; font-size:14px; line-height:1.7;}
+  .line{white-space:pre-wrap; word-break:break-word; opacity:0; animation:appear .15s forwards;}
+  .line.ok{color:var(--accent);}
+  .line.warn{color:var(--warn);}
+  .cursor{display:inline-block; width:8px; height:14px; background:var(--accent); vertical-align:-2px; animation:blink 1s step-end infinite;}
+  @keyframes appear{to{opacity:1;}}
+  @keyframes blink{50%{opacity:0;}}
+  .footer{padding:14px 20px; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px;}
+  .footer p{margin:0; color:var(--dim); font-size:12px;}
+  button{
+    background:var(--accent); color:#06150c; border:none; border-radius:6px;
+    padding:9px 16px; font-family:inherit; font-size:13px; font-weight:700;
+    cursor:pointer;
+  }
+  button:focus-visible{outline:2px solid var(--text); outline-offset:2px;}
+  button:disabled{opacity:.4; cursor:default;}
+  .reveal{
+    margin-top:10px; padding:14px; border:1px dashed var(--accent); border-radius:8px;
+    color:var(--accent); display:none;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .line{animation:none; opacity:1;}
+    .cursor{animation:none;}
+  }
+</style>
+</head>
+<body>
+  <main class="crt">
+    <div class="bar">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <span class="title">zilex_virus.exe — simulación, no es real</span>
+    </div>
+    <div class="screen" id="screen" aria-live="polite"></div>
+    <div class="footer">
+      <p id="status">Listo para iniciar la broma.</p>
+      <button id="btn">Ejecutar Zilex Virus</button>
+    </div>
+  </main>
+
+<script>
+(function(){
+  const screen = document.getElementById('screen');
+  const btn = document.getElementById('btn');
+  const status = document.getElementById('status');
+
+  const mensajes = [
+    {t:"Iniciando Zilex Virus Simulator...", c:"ok"},
+    {t:"Zilex ha poseído tu mouse (es broma, todo sigue bien)"},
+    {t:"Descargando más RAM desde la nube... [#####-----] 48%"},
+    {t:"Tu teclado aprendió a escribir con acento chileno"},
+    {t:"Alerta: nivel de awesomeness crítico detectado", c:"warn"},
+    {t:"Invocando al Zilex supremo..."},
+    {t:"Tu PC ahora cree que es una tostadora"},
+    {t:"Cargando chiste malo número 4..."},
+    {t:"Buscando el sentido de la vida en la Papelera de reciclaje"},
+    {t:"Entrenando una IA para que te haga la tarea"},
+    {t:"Probabilidad altísima de que esto sea solo una broma"},
+    {t:"Autodestruyendo este mensaje en 3, 2, 1... (mentira)", c:"warn"},
+  ];
+
+  function appendLine(text, cls){
+    const div = document.createElement('div');
+    div.className = 'line' + (cls ? ' ' + cls : '');
+    div.textContent = text;
+    screen.appendChild(div);
+    screen.scrollTop = screen.scrollHeight;
+  }
+
+  function run(){
+    btn.disabled = true;
+    screen.innerHTML = '';
+    status.textContent = 'Ejecutando...';
+    let i = 0;
+    const timer = setInterval(() => {
+      if (i >= mensajes.length){
+        clearInterval(timer);
+        finish();
+        return;
+      }
+      appendLine(mensajes[i].t, mensajes[i].c);
+      i++;
+    }, 550);
+  }
+
+  function finish(){
+    const reveal = document.createElement('div');
+    reveal.className = 'line ok';
+    reveal.style.marginTop = '8px';
+    reveal.innerHTML = 'Tranquilo/a :) Esto fue el <strong>ZILEX VIRUS</strong>, una broma 100% inofensiva.<br>No se tocó ni un archivo real. <span class="cursor"></span>';
+    screen.appendChild(reveal);
+    status.textContent = 'Terminado — fue solo una broma.';
+    btn.disabled = false;
+    btn.textContent = 'Repetir broma';
+  }
+
+  btn.addEventListener('click', run);
+})();
+</script>
+</body>
+</html>
