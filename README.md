@@ -1,3 +1,5 @@
+<img width="268" height="309" alt="Captura de pantalla 2026-10-15 210139" src="https://github.com/user-attachments/assets/4cb51479-8dd0-4146-82ad-0f83ef88fa43" />
+
 # Zilex Virus
 
 Un "virus" de broma inofensivo. No borra archivos, no modifica el sistema, no se replica ni corre para siempre: cada versión muestra una serie **fija** (12) de mensajes graciosos y luego se detiene sola.
